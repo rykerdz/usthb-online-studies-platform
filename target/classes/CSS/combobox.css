@@ -1,0 +1,21 @@
+.jfx-combo-box {
+    -fx-background-color:   #edf5e1;
+}
+
+.jfx-combo-box .label {
+    -fx-background-color:  WHITE;
+    -jfx-focus-color: TRANSPARENT;
+    -jfx-unfocus-color:  TRANSPARENT;
+    -fx-text-fill: #edf5e1;
+    -fx-background-radius: 40;
+    -fx-text-alignment: center;
+
+}
+.jfx-combo-box .list-cell {
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+}
+
+.jfx-combo-box > .prompt-container {
+    -fx-alignment: center-left;
+}

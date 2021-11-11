@@ -1,0 +1,7 @@
+.jfx-text-field, .jfx-password-field {
+    -fx-prompt-text-fill: #c1c1c1;
+    -fx-text-fill:  #EDF5E1;
+    -fx-border-radius: 100;
+    -fx-background-radius: 5;
+
+}

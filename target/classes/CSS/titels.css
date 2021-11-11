@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'Motion';
+    src: url('assets/fonts/motion.ttf');
+}
+
+.text {
+    -fx-font-family: "Motion";
+}
