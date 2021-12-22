@@ -13,13 +13,17 @@ import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 
 public class HelloController {
@@ -44,46 +48,74 @@ public class HelloController {
         System.exit(0);
     }
 
-    public void sign_in(){
-        String college_domain = "usthb.dz";
-        String user = email.getText();
+    public void sign_in(ActionEvent event) throws IOException {
+        // data
+        String username = email.getText();
         String password = pass.getText();
-        if (validate((user))){
-            if (user.contains(college_domain)){
-                if (password.length()>6){
-                    //TODO: send the SQL request to check user
+        Data data = new Data(username, password);
+        User user = data.checkData_login();
+        msg_label.setTextFill(Color.color(1, 0, 0));
+        msg_label.setText(user.getNeed2passAMSG());
+        // end data
 
-                }
-                else{
-                    msg_label.setText("Error: Password must be at least 6 characters long!");
-                    msg_label.setTextFill(Color.color(1,0,0.2));
-                }
 
-            }
-            else{
-                msg_label.setText("Error: Please use your usthb email @etu./@ usthb.dz ");
-                msg_label.setTextFill(Color.color(1,0,0.2));
 
+        Map<Class, Callable<?>> creators = new HashMap<>();
+        creators.put(StudentScene.class, new Callable<StudentScene>() {
+
+            @Override
+            public StudentScene call() throws Exception {
+                return new StudentScene(user);
             }
 
-        }
-        else{
-            msg_label.setText("Error: INVALID Email!");
-            msg_label.setTextFill(Color.color(1,0,0.2));
+        });
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Objects.requireNonNull(getClass().getResource("student_scene.fxml")));
+
+        loader.setControllerFactory(new Callback<Class<?>, Object>() {
+
+            @Override
+            public Object call(Class<?> param) {
+                Callable<?> callable = creators.get(param);
+                if (callable == null) {
+                    try {
+                        // default handling: use no-arg constructor
+                        return param.newInstance();
+                    } catch (InstantiationException | IllegalAccessException ex) {
+                        throw new IllegalStateException(ex);
+                    }
+                } else {
+                    try {
+                        return callable.call();
+                    } catch (Exception ex) {
+                        throw new IllegalStateException(ex);
+                    }
+                }
+            }
+        });
+        Parent registerParent = loader.load();
+        Scene registerScene = new Scene(registerParent);
+
+        //This line gets the Stage information
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        //StudentScene controller = loader.getController();
+
+
+
+
+
+        if(!user.isNull()){
+            //window.setUserData(user);
+            //controller.getData(user);
+            window.setScene(registerScene);
+            window.show();
 
         }
-    
+
+
+
     }
-    // email checking ...
-    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
-            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-
-    public static boolean validate(String emailStr) {
-        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
-        return matcher.find();
-    }
-
-
     public void showRegisterWindow(ActionEvent event) throws IOException
     {
         Parent registerParent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("register.fxml")));
@@ -95,4 +127,9 @@ public class HelloController {
         window.setScene(registerScene);
         window.show();
     }
+    public void showStudentWindow() throws IOException
+    {
+
+    }
+
 }

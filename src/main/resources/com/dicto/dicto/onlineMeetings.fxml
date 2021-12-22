@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="511.0" prefWidth="994.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dicto.dicto.OnlineMeetingsController">
+   <children>
+      <Label layoutX="45.0" layoutY="14.0" prefHeight="35.0" prefWidth="259.0" style="-fx-background-color: #05386b; -fx-background-radius: 0;" text=" UPCOMING MEETINGS " textFill="WHITE">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <AnchorPane fx:id="pane" layoutX="-1.0" layoutY="49.0" prefHeight="495.0" prefWidth="995.0" style="-fx-border-color: #05386b; -fx-border-radius: 30px;">
+         <children>
+            <VBox fx:id="vbox" layoutX="11.0" layoutY="12.0" prefHeight="475.0" prefWidth="971.0" />
+         </children>
+      </AnchorPane>
+      <Label fx:id="id_talk" layoutX="316.0" layoutY="22.0" prefHeight="19.0" prefWidth="77.0" text="Logged in as: " />
+      <Label fx:id="id" layoutX="399.0" layoutY="22.0" text="Label" />
+   </children>
+</AnchorPane>

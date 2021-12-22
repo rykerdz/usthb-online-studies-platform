@@ -15,7 +15,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="dicto" options="--add-exports com.jfoenix/com.jfoenix=com.dicto.dicto" />
+      <module name="dicto" options="" />
     </option>
   </component>
 </project>

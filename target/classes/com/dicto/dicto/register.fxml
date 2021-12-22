@@ -7,62 +7,83 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="390.0" prefWidth="680.0" style="-fx-background-color: #05386b; -fx-min-width: 680; -fx-min-height: 390;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dicto.dicto.RegisterController">
     <children>
-        <Text fill="#edf5e1" layoutX="282.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SIGN UP" wrappingWidth="126.55596923828125">
+      <JFXTextField fx:id="matricule" focusColor="#379683" layoutX="137.0" layoutY="69.0" prefHeight="29.0" prefWidth="198.0" stylesheets="@../../../CSS/textFileds.css" unFocusColor="#edf5e1" />
+      <JFXTextField fx:id="name" focusColor="#379683" layoutX="138.0" layoutY="115.0" onKeyTyped="#setEmailAdress" prefHeight="21.0" prefWidth="151.0" stylesheets="@../../../CSS/textFileds.css" unFocusColor="#edf5e1" />
+      <JFXTextField fx:id="fname" focusColor="#379683" layoutX="411.0" layoutY="116.0" onKeyTyped="#setEmailAdress" prefHeight="29.0" prefWidth="151.0" stylesheets="@../../../CSS/textFileds.css" unFocusColor="#edf5e1" />
+        <Text fill="#edf5e1" layoutX="276.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SIGN UP" wrappingWidth="126.55596923828125">
             <font>
                 <Font size="33.0" />
             </font>
         </Text>
-        <Label layoutX="51.0" layoutY="81.0" text="Email" textFill="#edf5e1">
+        <Label layoutX="44.0" layoutY="183.0" text="EDU-Email" textFill="#edf5e1">
             <font>
-                <Font size="18.0" />
+                <Font size="14.0" />
             </font>
         </Label>
-        <Label layoutX="51.0" layoutY="138.0" text="Password" textFill="#edf5e1">
+        <Label layoutX="46.0" layoutY="236.0" text="Password" textFill="#edf5e1">
             <font>
-                <Font size="18.0" />
+                <Font size="14.0" />
             </font>
         </Label>
-        <JFXTextField fx:id="email" focusColor="#379683" labelFloat="true" layoutX="143.0" layoutY="73.0" onKeyTyped="#disableGroupComboBox" prefHeight="26.0" prefWidth="198.0" promptText="\@etu.usthb.dz / @usthb.dz" stylesheets="@../../../CSS/textFileds.css" unFocusColor="#edf5e1" />
-        <JFXPasswordField fx:id="pass" focusColor="#379683" labelFloat="true" layoutX="143.0" layoutY="128.0" prefHeight="26.0" prefWidth="198.0" stylesheets="@../../../CSS/textFileds.css" unFocusColor="#edf5e1" />
-      <JFXPasswordField fx:id="pass1" focusColor="#379683" labelFloat="true" layoutX="441.0" layoutY="128.0" prefHeight="26.0" prefWidth="198.0" stylesheets="@../../../CSS/textFileds.css" unFocusColor="#edf5e1" />
-        <JFXButton layoutX="252.0" layoutY="326.0" prefHeight="32.0" prefWidth="75.0" style="-fx-background-color: #379683;" stylesheets="@../../../CSS/buttons.css" text="Sign up" textFill="#edf5e1" />
-        <JFXButton layoutX="345.0" layoutY="326.0" prefHeight="32.0" prefWidth="86.0" style="-fx-background-color: #379683;" stylesheets="@../../../CSS/buttons.css" text="Back" textFill="#edf5e1" />
-        <Label fx:id="msg_label" layoutX="44.0" layoutY="342.0" prefHeight="19.0" prefWidth="397.0" textFill="#d51a1a" />
-      <Label layoutX="359.0" layoutY="138.0" text="Confirm" textFill="#edf5e1">
+        <JFXTextField fx:id="email" focusColor="#379683" labelFloat="true" layoutX="137.0" layoutY="168.0" onKeyTyped="#disableGroupComboBox" prefHeight="26.0" prefWidth="198.0" promptText="\@etu.usthb.dz / @usthb.dz" stylesheets="@../../../CSS/textFileds.css" unFocusColor="#edf5e1" />
+        <JFXPasswordField fx:id="password" focusColor="#379683" labelFloat="true" layoutX="138.0" layoutY="221.0" prefHeight="26.0" prefWidth="198.0" stylesheets="@../../../CSS/textFileds.css" unFocusColor="#edf5e1" />
+      <JFXPasswordField fx:id="password_confirm" focusColor="#379683" labelFloat="true" layoutX="436.0" layoutY="221.0" prefHeight="26.0" prefWidth="198.0" stylesheets="@../../../CSS/textFileds.css" unFocusColor="#edf5e1" />
+        <JFXButton layoutX="446.0" layoutY="334.0" onAction="#check_data" prefHeight="32.0" prefWidth="84.0" style="-fx-background-color: #379683;" stylesheets="@../../../CSS/buttons.css" text="Sign up" textFill="#edf5e1">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></JFXButton>
+        <JFXButton layoutX="548.0" layoutY="334.0" onAction="#showHelloWindow" prefHeight="32.0" prefWidth="86.0" style="-fx-background-color: #379683;" stylesheets="@../../../CSS/buttons.css" text="Back" textFill="#edf5e1">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></JFXButton>
+        <Label fx:id="msg_label" layoutX="39.0" layoutY="343.0" prefHeight="19.0" prefWidth="397.0" textFill="#d51a1a" />
+      <Label layoutX="356.0" layoutY="236.0" text="Confirm" textFill="#edf5e1">
          <font>
-            <Font size="18.0" />
+            <Font size="14.0" />
          </font>
       </Label>
-      <JFXComboBox fx:id="level_cb" focusColor="#358f7d00" layoutX="160.0" layoutY="256.0" onAction="#initComboBox" prefHeight="29.0" prefWidth="93.0" promptText="LEVEL" stylesheets="@../../../CSS/combobox.css" unFocusColor="#edf5e100">
+      <JFXComboBox fx:id="level_cb" focusColor="#358f7d00" layoutX="306.0" layoutY="281.0" onAction="#initComboBox" prefHeight="29.0" prefWidth="93.0" promptText="LEVEL" stylesheets="@../../../CSS/combobox.css" unFocusColor="#edf5e100">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXComboBox>
-      <JFXComboBox fx:id="section_cb" focusColor="#358f7d00" layoutX="299.0" layoutY="256.0" prefHeight="29.0" prefWidth="93.0" promptText="SECTION" stylesheets="@../../../CSS/combobox.css" unFocusColor="#edf5e100">
+      <JFXComboBox fx:id="section_cb" focusColor="#358f7d00" layoutX="446.0" layoutY="281.0" prefHeight="29.0" prefWidth="93.0" promptText="SECTION" stylesheets="@../../../CSS/combobox.css" unFocusColor="#edf5e100">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXComboBox>
-      <JFXComboBox fx:id="group_cb" focusColor="#358f7d00" layoutX="438.0" layoutY="256.0" prefHeight="29.0" prefWidth="86.0" promptText="GROUP" stylesheets="@../../../CSS/combobox.css" unFocusColor="#edf5e100">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </JFXComboBox>
-      <Label layoutX="51.0" layoutY="196.0" text="Date of birth" textFill="#edf5e1">
+      <Label layoutX="48.0" layoutY="291.0" text="Birth day" textFill="#edf5e1">
          <font>
-            <Font size="18.0" />
+            <Font size="14.0" />
          </font>
       </Label>
-      <JFXDatePicker defaultColor="#379683" layoutX="170.0" layoutY="191.0" prefHeight="29.0" prefWidth="113.0" stylesheets="@../../../CSS/datePicker.css">
+      <JFXDatePicker fx:id="b_day" defaultColor="#379683" layoutX="138.0" layoutY="278.0" prefHeight="29.0" prefWidth="100.0" stylesheets="@../../../CSS/datePicker.css">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXDatePicker>
+      <Label layoutX="46.0" layoutY="131.0" text="Name" textFill="#edf5e1">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="308.0" layoutY="128.0" text="Family Name" textFill="#edf5e1">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="44.0" fitWidth="93.0" layoutX="19.0" layoutY="330.0" pickOnBounds="true" preserveRatio="true" />
+      <Label layoutX="47.0" layoutY="82.0" text="Matricule" textFill="#edf5e1">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
     </children>
 </Pane>

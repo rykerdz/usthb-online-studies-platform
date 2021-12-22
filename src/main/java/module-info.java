@@ -7,6 +7,8 @@ module com.dicto.dicto {
     requires org.kordamp.bootstrapfx.core;
     requires java.desktop;
     requires com.jfoenix;
+    requires java.sql;
+    requires mysql.connector.java;
 
     opens com.dicto.dicto to javafx.fxml;
     exports com.dicto.dicto;
