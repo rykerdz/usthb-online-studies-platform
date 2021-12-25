@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TreeTableColumn?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="511.0" prefWidth="994.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dicto.dicto.AskTeachersController">
+   <children>
+      <Label layoutX="45.0" layoutY="14.0" prefHeight="35.0" prefWidth="213.0" style="-fx-background-color: #05386b; -fx-background-radius: 0;" text=" YOUR QUESTIONS" textFill="WHITE">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <AnchorPane fx:id="pane" layoutX="-1.0" layoutY="49.0" prefHeight="495.0" prefWidth="995.0">
+         <children>
+            <VBox fx:id="vbox" layoutX="11.0" layoutY="12.0" prefHeight="486.0" prefWidth="972.0">
+               <children>
+                  <HBox prefHeight="501.0" prefWidth="972.0">
+                     <children>
+                        <JFXTreeTableView fx:id="tableView" prefHeight="486.0" prefWidth="824.0" stylesheets="@../../../CSS/column.css">
+                           <columns>
+                              <TreeTableColumn fx:id="idd" prefWidth="49.919962882995605" text="ID" />
+                              <TreeTableColumn fx:id="module" prefWidth="115.45596694946289" text="Module" />
+                              <TreeTableColumn fx:id="teacherName" prefWidth="144.1280517578125" text="Teacher's name" />
+                              <TreeTableColumn fx:id="subject" prefWidth="204.28799438476562" text="Subject" />
+                              <TreeTableColumn fx:id="askedOn" prefWidth="122.11196899414062" text="Asked on" />
+                              <TreeTableColumn fx:id="answered" prefWidth="96.5120849609375" text="Answered?" />
+                           </columns>
+                        </JFXTreeTableView>
+                        <VBox alignment="CENTER" prefHeight="486.0" prefWidth="323.0">
+                           <children>
+                              <JFXButton fx:id="view" onAction="#seeQuestionDetails" prefHeight="49.0" prefWidth="177.0" style="-fx-background-color: #05386b; -fx-background-radius: 20px;" text="See question details" textAlignment="CENTER" textFill="#5cdb95" wrapText="true">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="20.0" />
+                                 </VBox.margin>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </JFXButton>
+                              <JFXButton fx:id="add" defaultButton="true" onAction="#askQuestion" prefHeight="49.0" prefWidth="177.0" style="-fx-background-color: #5CDB95; -fx-background-radius: 20px;" text="Ask a new question" textAlignment="CENTER" textFill="#05386b" wrapText="true">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </JFXButton>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children></VBox>
+         </children>
+      </AnchorPane>
+      <Label fx:id="id_talk" layoutX="362.0" layoutY="22.0" prefHeight="19.0" prefWidth="77.0" text="Logged in as: " />
+      <Label fx:id="id" layoutX="445.0" layoutY="22.0" text="Label" />
+   </children>
+</AnchorPane>

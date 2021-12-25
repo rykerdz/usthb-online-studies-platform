@@ -587,8 +587,6 @@ public class Authentication {
             }
 
         }
-
-
         return false;
     }
     public Hashtable<String, ArrayList<Body>> getHomeworks(int classroom_id){
@@ -659,6 +657,24 @@ public class Authentication {
 
     }
 
+    public boolean submitHomework(int homeworkId, String studentId){
+        String submitHomework = "INSERT INTO homework_status (homework_id, student_id) values (?,?)";
+        try {
+            PreparedStatement ps = connection.prepareStatement(submitHomework);
+            int result;
+            ps.setInt(1,homeworkId);
+            ps.setString(2,studentId);
+            result = ps.executeUpdate();
+            if(result>0){
+                return true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public boolean uploadFileStudent(int homeworkId, String studentId, String FILE_NAME, File file){
 
         int rs = 0;
@@ -696,6 +712,234 @@ public class Authentication {
         }
 
         return done;
+    }
+
+
+    public boolean checkPasswordAndPushUpdates(String id, String password, String firstName, String lastName, String email){
+        String checkPassword = "SELECT * FROM student WHERE id=? AND password=?";
+        String pushUpdates = "UPDATE student SET firstname=?, lastname=?, email=? WHERE id=?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(checkPassword);
+            ResultSet result;
+            ps.setString(1,id);
+            ps.setString(2,password);
+            result = ps.executeQuery();
+            if(result.next()){
+                // password checked ... pushing updates
+                PreparedStatement ps2 = connection.prepareStatement(pushUpdates);
+                int res;
+                ps2.setString(1,firstName);
+                ps2.setString(2,lastName);
+                ps2.setString(3,email);
+                ps2.setString(4, id);
+                res = ps2.executeUpdate();
+                if(res>0){
+                    return true;
+                }
+                else return false;
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+
+
+    }
+    public boolean checkPasswordAndPushNewPassword(String id, String password, String newPass){
+        String checkPassword = "SELECT * FROM student WHERE id=? AND password=?";
+        String pushNewPassword = "UPDATE student SET password=? WHERE id=?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(checkPassword);
+            ResultSet result;
+            ps.setString(1,id);
+            ps.setString(2,password);
+            result = ps.executeQuery();
+            if(result.next()){
+                // password checked ... pushing updates
+                PreparedStatement ps2 = connection.prepareStatement(pushNewPassword);
+                int res;
+                ps2.setString(1,newPass);
+                ps2.setString(2, id);
+                res = ps2.executeUpdate();
+                if(res>0){
+                    return true;
+                }
+                else return false;
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+
+
+    }
+    public ObservableList<Question> getQuestions(String studentId){
+        ObservableList<Question> questions = FXCollections.observableArrayList();
+        String getQuestions = "SELECT * FROM question WHERE student_id=?";
+        String getModule = "SELECT * FROM module WHERE id=?";
+        String getTeacher = "SELECT * FROM teacher WHERE id=?";
+        String moduleName, teacherName;
+        try {
+            PreparedStatement ps = connection.prepareStatement(getQuestions);
+            ResultSet result = null;
+            ps.setString(1,studentId);
+            result = ps.executeQuery();
+            while(result.next()){
+                PreparedStatement ps2 = connection.prepareStatement(getModule);
+                ps2.setInt(1,result.getInt("module_id"));
+                ResultSet rs2 = ps2.executeQuery();
+                if(rs2.next()){
+                    moduleName = rs2.getString("name");
+                }
+                else {
+                    return null;
+                }
+                PreparedStatement ps3 = connection.prepareStatement(getTeacher);
+                ps3.setInt(1,result.getInt("teacher_id"));
+                ResultSet rs3 = ps3.executeQuery();
+                if(rs3.next()){
+                    teacherName = rs3.getString("firstname").toUpperCase() +" "+ rs3.getString("lastname");
+                }
+                else {
+                    return null;
+                }
+
+                Timestamp time = result.getTimestamp("qstime");
+                String date = new SimpleDateFormat("yyyy/MM/dd").format(time);
+                int id = result.getInt("id");
+                String subject = result.getString("subject");
+                String answered;
+                if(result.getString("response").equals("none")){
+                    answered = "No" ;
+                }
+                else{
+                    answered = "Yes";
+                }
+
+
+                Question question = new Question(id, moduleName, teacherName, date, subject, answered);
+                questions.add(question);
+
+            }
+
+            return questions;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return FXCollections.observableArrayList();
+
+    }
+    public Question getQuestionDetails(int questionId){
+        Question question;
+        String getQuestion = "SELECT * FROM question WHERE id=?";
+        String responseDate;
+        try {
+            PreparedStatement ps = connection.prepareStatement(getQuestion);
+            ResultSet result = null;
+            ps.setInt(1,questionId);
+            result = ps.executeQuery();
+            if(result.next()){
+
+                String subject = result.getString("subject");
+                String response = result.getString("response");
+                String body = result.getString("body");
+                LocalDateTime published = result.getTimestamp("qstime").toLocalDateTime();
+                String publishedDate = published.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL));
+                if(result.getTimestamp("rsptime") == null){
+                    responseDate = "-";
+                    response = "Your teacher hasn't respond to your question yet!";
+                }
+                else{
+                    LocalDateTime responded = result.getTimestamp("rsptime").toLocalDateTime();
+                    responseDate = responded.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL));
+                }
+
+                question = new Question(publishedDate, responseDate, subject, body, response);
+                return question;
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+    public Hashtable<String, String> getTeachers(int classroomId){
+        String getTeachers = "SELECT teacher_id, name FROM module WHERE classroom_id=?";
+        String getTeacherName = "SELECT * FROM teacher WHERE id=?";
+        Hashtable<String, String> teachers = new Hashtable<>();
+        try {
+            PreparedStatement ps = connection.prepareStatement(getTeachers);
+            ResultSet result;
+            ps.setInt(1,classroomId);
+            result = ps.executeQuery();
+            while(result.next()){
+                // getting teacher names
+                String teacher_id = result.getString("teacher_id");
+                String module = result.getString("name");
+                PreparedStatement ps2 = connection.prepareStatement(getTeacherName);
+                ResultSet res;
+                ps2.setString(1, teacher_id);
+                res = ps2.executeQuery();
+                if(res.next()){
+                    String teacherName = res.getString("firstname").toUpperCase() +" "+ res.getString("lastname")+" - "+module;
+                    teachers.put(teacherName, teacher_id);
+                }
+                else return null;
+
+            }
+            return teachers;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+
+
+    }
+
+    public boolean sendQuestion(String subject, String body, String studentId, String teacherId, int classroomId){
+        String sendQuestion = "INSERT INTO question (subject, body, student_id, teacher_id, classroom_id, module_id) VALUES(?,?,?,?,?,?)";
+        String getModule = "SELECT * FROM module WHERE teacher_id=? and classroom_id=?";
+        int moduleId;
+        try {
+            PreparedStatement ps2 = connection.prepareStatement(getModule);
+
+            ps2.setString(1,teacherId);
+            ps2.setInt(2,classroomId);
+            ResultSet rs2 = ps2.executeQuery();
+            if(rs2.next()){
+                moduleId = rs2.getInt("id");
+            }
+            else {
+                return false;
+            }
+            PreparedStatement ps = connection.prepareStatement(sendQuestion);
+            int result;
+            ps.setString(1,subject);
+            ps.setString(2,body);
+            ps.setString(3,studentId);
+            ps.setString(4,teacherId);
+            ps.setInt(5,classroomId);
+            ps.setInt(6,moduleId);
+            result = ps.executeUpdate();
+            if(result>0){
+                return true;
+            }
+            else return false;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+
+
     }
 
 }

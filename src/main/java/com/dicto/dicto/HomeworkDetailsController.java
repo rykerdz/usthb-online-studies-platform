@@ -10,6 +10,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,6 +24,8 @@ public class HomeworkDetailsController {
     @FXML
     private VBox vbox;
     boolean isSubmitAvailable;
+    private JFXButton btn2 = new JFXButton();
+    private JFXButton bttn = new JFXButton();
 
     HomeworkDetailsController(int homeworkId,String userId, Authentication auth)
     {
@@ -33,12 +36,10 @@ public class HomeworkDetailsController {
     }
 
     public void initialize(){
+        bttn.setDisable(true);
         Homework homework = auth.getHomeworkDetails(this.homeworkId);
         vbox.getChildren().add(createHomeworkDetails(" "+homework.getTitle()+" "));
-        vbox.getChildren().add(createDetails(homework.getDueDate(), homework.getPublishDate(), homework.getBody(), homework.getTeacherName(), homework.getDuration(),"ID: "+
-                homework.getFile().getId()+"" +
-                "                      Type: "+homework.getFile().getType()+
-                "                      File name: "+homework.getFile().getFilename()));
+        vbox.getChildren().add(createDetails(homework.getDueDate(), homework.getPublishDate(), homework.getBody(), homework.getTeacherName(), homework.getDuration(),homework.getFile()));
     }
 
     public Label createHomeworkDetails(String text){
@@ -49,7 +50,7 @@ public class HomeworkDetailsController {
         return label;
 
     }
-    public VBox createDetails(String dueDate, String publishDate, String body, String teacherName, String duration, String fileInfos){
+    public VBox createDetails(String dueDate, String publishDate, String body, String teacherName, String duration, OneReallySimpleFile fileInfos){
         VBox vbox = new VBox();
         VBox.setMargin(vbox, new Insets(20,40,0,40));
         HBox hbox = new HBox();
@@ -97,13 +98,26 @@ public class HomeworkDetailsController {
         HBox hbox2 = new HBox();
         hbox2.setSpacing(90);
         Label label7 = new Label();
-        label7.setText(fileInfos);
+        label7.setText("ID: "+
+                fileInfos.getId()+"" +
+                "                      Type: "+fileInfos.getType()+
+                "                      File name: "+fileInfos.getFilename());
         label7.setStyle("-fx-font-size: 13; -fx-text-fill: #000000");
         label7.setWrapText(true);
         label7.setPadding(new Insets(0,0,0,25));
         JFXButton btn = new JFXButton();
         btn.setStyle("-fx-background-color: #5CDB95; -fx-text-fill: #05386b");
         btn.setText("Download");
+        btn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent t) {
+                btn.setText("Downloading...");
+                auth.downloadFile(fileInfos.getId(), fileInfos.getFilename());
+                btn.setText("Download");
+                PopUp.showDialog("File: "+fileInfos.getFilename()+" has been saved to your downloads directory!", "Download Status");
+            }
+        });
         VBox.setMargin(label6, new Insets(40,0,0,0));
         hbox2.getChildren().add(label7);
         hbox2.getChildren().add(btn);
@@ -122,7 +136,6 @@ public class HomeworkDetailsController {
         label9.setPadding(new Insets(0,0,0,25));
         Label label10 = new Label();
         label9.setStyle("-fx-font-size: 13; -fx-text-fill: #000000");
-        JFXButton btn2 = new JFXButton();
         btn2.setStyle("-fx-background-color: #5CDB95; -fx-text-fill: #05386b");
         btn2.setText("SELECT FILES");
         String res;
@@ -130,6 +143,7 @@ public class HomeworkDetailsController {
 
             @Override
             public void handle(MouseEvent t) {
+                label10.setText( "Uploading...");
                 label10.setText( chooseFile());
             }
         });
@@ -142,12 +156,34 @@ public class HomeworkDetailsController {
         vbox.getChildren().add(hbox3);
         HBox hboxi = new HBox();
         hboxi.setAlignment(Pos.BOTTOM_RIGHT);
-        JFXButton bttn = new JFXButton();
+
         bttn.setStyle("-fx-background-color: #05386b; -fx-text-fill: #5CDB95; -fx-font-size: 17");
         bttn.setText("SUBMIT");
-        if(!isSubmitAvailable) bttn.setDisable(true);
+        bttn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent t) {
+                if(auth.submitHomework(homeworkId, userId)){
+                    bttn.setDisable(true);
+                    btn2.setDisable(true);
+                    PopUp.showDialog("You have submitted your homework successfully!", "Homework submitted");
+                }
+            }
+        });
+        Label lbl = new Label();
+        lbl.setStyle("-fx-text-fill: #000000");
+        lbl.setText("You have already submitted this homework!");
+        lbl.setPadding(new Insets(0,10,0,0));
+        if(isSubmitAvailable) {
+            bttn.setDisable(true);
+            btn2.setDisable(true);
+            hboxi.getChildren().add(lbl);
+        }
         VBox.setMargin(hboxi, new Insets(130, 0,0,0));
+
+
         hboxi.getChildren().add(bttn);
+
         vbox.getChildren().add(hboxi);
 
 
@@ -165,10 +201,13 @@ public class HomeworkDetailsController {
                 FILE_NAME = selectedFiles.get(i).getName();
                 fileNames += FILE_NAME+" ,";
                 auth.uploadFileStudent(this.homeworkId, this.userId, FILE_NAME, selectedFiles.get(i));
+                bttn.setDisable(false);
+
 
             }
         }
-        return fileNames+"Uploaded Successfully";
+        PopUp.showDialog("Uploaded "+ fileNames+" To the Server successfully", "Upload Status");
+        return fileNames;
 
     }
 

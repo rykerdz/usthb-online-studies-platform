@@ -28,7 +28,7 @@
                               <Font size="17.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton onAction="#showSharedFiles" prefHeight="63.0" text="Shared Files" textFill="WHITE">
+                        <JFXButton onAction="#showSharedFiles" prefHeight="61.0" text="Shared Files" textFill="WHITE">
                            <font>
                               <Font size="17.0" />
                            </font>
@@ -38,12 +38,12 @@
                               <Font size="17.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton fx:id="chat" prefHeight="66.0" text="Chat" textFill="WHITE">
+                        <JFXButton fx:id="chat" onAction="#showQuestions" prefHeight="66.0" text="Questions" textFill="WHITE">
                            <font>
                               <Font size="17.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton prefHeight="61.0" text="Settings" textFill="WHITE">
+                        <JFXButton onAction="#showSettings" prefHeight="61.0" text="Settings" textFill="WHITE">
                            <padding>
                               <Insets left="20.0" right="20.0" />
                            </padding>

@@ -66,6 +66,18 @@ public class StudentScene{
         mainPane.setCenter(view);
 
     }
+    public void showSettings() {
+        FXMloader obj = new FXMloader();
+        Pane view = obj.getSettingsPage(user, auth);
+        mainPane.setCenter(view);
+
+    }
+    public void showQuestions() {
+        FXMloader obj = new FXMloader();
+        Pane view = obj.getQuestionsPage(user, auth);
+        mainPane.setCenter(view);
+
+    }
 
 
 }

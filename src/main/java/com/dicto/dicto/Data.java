@@ -111,14 +111,14 @@ public class Data {
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
-    private static boolean checkEmail(String emailStr) {
+    public static boolean checkEmail(String emailStr) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
         boolean usthb_valid = emailStr.contains("@usthb.dz") || emailStr.contains("@etu.usthb.dz");
         if (matcher.find() && usthb_valid) return true;
         else return false;
     }
     // name check
-    private static boolean checkName(String str1, String str2) {
+    public static boolean checkName(String str1, String str2) {
         String expression = "^[a-zA-Z]+";
         if (str1.matches(expression) && str2.matches(expression)){
             return true;
@@ -126,7 +126,7 @@ public class Data {
         return false;
     }
 
-    private boolean checkPassword(String pass1, String pass2){
+    public static boolean checkPassword(String pass1, String pass2){
 
         String expression = "^(?=.*[0-9])(?=\\S+$).{8,}$";
         if (pass1.matches(expression) && pass2.matches(expression) && pass1.equals(pass2)){
@@ -134,7 +134,7 @@ public class Data {
         }
         return false;
     }
-    private boolean checkPassword_login(String pass){
+    public static boolean checkPassword_login(String pass){
         String expression = "^(?=.*[0-9])(?=\\S+$).{8,}$";
         if (pass.matches(expression)){
             return true;

@@ -128,9 +128,63 @@ public class FXMloader {
         }
         return view;
     }
+    public Pane getSettingsPage(User user, Authentication auth){
+
+        try{
+            URL fileUrl = StudentScene.class.getResource("settings.fxml");
+            if(fileUrl == null) throw new FileNotFoundException("This file doesn't exist");
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(fileUrl);
+            creators.put(SettingsController.class, new Callable<SettingsController>() {
+
+                @Override
+                public SettingsController call() throws Exception {
+                    return new SettingsController(user, auth);
+                }
+
+            });
+
+            bordir(loader);
+
+
+            view = loader.load();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return view;
+    }
+    public Pane getQuestionsPage(User user, Authentication auth){
+
+        try{
+            URL fileUrl = StudentScene.class.getResource("askTeachers.fxml");
+            if(fileUrl == null) throw new FileNotFoundException("This file doesn't exist");
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(fileUrl);
+            creators.put(AskTeachersController.class, new Callable<AskTeachersController>() {
+
+                @Override
+                public AskTeachersController call() throws Exception {
+                    return new AskTeachersController(user, auth);
+                }
+
+            });
+
+            bordir(loader);
+
+
+            view = loader.load();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return view;
+    }
 
     public void openDetlaiedView(int id1, String id2, Authentication auth){
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("detailedHomework.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(StudentScene.class.getResource("detailedHomework.fxml"));
         Scene scene = null;
         creators.put(HomeworkDetailsController.class, new Callable<HomeworkDetailsController>() {
 
@@ -154,6 +208,59 @@ public class FXMloader {
         stage.setResizable(false);
         stage.show();
     }
+
+    public void openQuestionDetlaiedView(int id1, String id2, String teacherName, Authentication auth){
+        FXMLLoader fxmlLoader = new FXMLLoader(StudentScene.class.getResource("detailedQuestion.fxml"));
+        Scene scene = null;
+        creators.put(QuestionDetailsController.class, new Callable<QuestionDetailsController>() {
+
+            @Override
+            public QuestionDetailsController call() throws Exception {
+                return new QuestionDetailsController(id1, id2, teacherName, auth);
+            }
+
+        });
+
+        bordir(fxmlLoader);
+        try {
+            scene = new Scene(fxmlLoader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Stage stage = new Stage();
+        stage.setTitle("Question details");
+        stage.setScene(scene);
+        //stage.initStyle(StageStyle.UNDECORATED);
+        stage.setResizable(false);
+        stage.show();
+    }
+
+    public void openAskQuestionView(User user, Authentication auth){
+        FXMLLoader fxmlLoader = new FXMLLoader(StudentScene.class.getResource("askQuestionPopUp.fxml"));
+        Scene scene = null;
+        creators.put(QuestionAskController.class, new Callable<QuestionAskController>() {
+
+            @Override
+            public QuestionAskController call() throws Exception {
+                return new QuestionAskController(user, auth);
+            }
+
+        });
+
+        bordir(fxmlLoader);
+        try {
+            scene = new Scene(fxmlLoader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Stage stage = new Stage();
+        stage.setTitle("Ask a question");
+        stage.setScene(scene);
+        //stage.initStyle(StageStyle.UNDECORATED);
+        stage.setResizable(false);
+        stage.show();
+    }
+
 
 
 
