@@ -941,6 +941,241 @@ public class Authentication {
 
 
     }
+    public Hashtable<String, Integer> getClassrooms(String teacherId){
+        String getClassrooms = "SELECT classroom_id, name FROM module WHERE teacher_id=?";
+        String getClassroomName = "SELECT * FROM classroom WHERE id=?";
+        Hashtable<String, Integer> classrooms = new Hashtable<>();
+        try {
+            PreparedStatement ps = connection.prepareStatement(getClassrooms);
+            ResultSet result;
+            ps.setString(1,teacherId);
+            result = ps.executeQuery();
+            while(result.next()){
+                // getting teacher names
+                int classroom_id = result.getInt("classroom_id");
+                String module = result.getString("name");
+                PreparedStatement ps2 = connection.prepareStatement(getClassroomName);
+                ResultSet res;
+                ps2.setInt(1, classroom_id);
+                res = ps2.executeQuery();
+                if(res.next()){
+                    String classroomName = res.getString("name").toUpperCase() +" - "+module;
+                    classrooms.put(classroomName, classroom_id);
+                }
+                else return null;
+
+            }
+            return classrooms;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+
+
+    }
+    public Body getLatestAnnou(int classroom_id, String teacher_id){
+
+        String getAnnou = "SELECT * FROM announcement WHERE classroom_id=? AND teacher_id_a=? ORDER BY time DESC LIMIT 1";
+        try {
+            PreparedStatement ps = connection.prepareStatement(getAnnou);
+            ResultSet result = null;
+            ps.setInt(1,classroom_id);
+            ps.setString(2,teacher_id);
+            result = ps.executeQuery();
+            if(result.next()){
+                Timestamp date = result.getTimestamp("time");
+                String time = new SimpleDateFormat("yyyy/MM/dd HH:mm").format(date);
+                String title = "Your Latest Announcement: @ "+time;
+                String text = result.getString("body");
+                return new Body(text, title);
+
+            }
+            else{
+                return new Body("error", "eroor");
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return new Body("error", "eroor");
+
+    }
+
+    public boolean sendAnnou(int classroom_id, String teacher_id, String text){
+
+        String getAnnou = "INSERT INTO announcement (body, teacher_id_a, module_id, classroom_id) VALUES (?,?,?,?)";
+        int module_id = getModule(teacher_id, classroom_id);
+        try {
+            PreparedStatement ps = connection.prepareStatement(getAnnou);
+            int result;
+            ps.setString(1,text);
+            ps.setString(2,teacher_id);
+            ps.setInt(3,module_id);
+            ps.setInt(4,classroom_id);
+            result = ps.executeUpdate();
+            return result > 0;
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+
+    }
+    public int getModule(String teacher_id, int classroom_id){
+        String getModue = "SELECT * FROM module WHERE teacher_id=? and classroom_id=?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(getModue);
+            ResultSet result = null;
+            ps.setInt(2,classroom_id);
+            ps.setString(1,teacher_id);
+            result = ps.executeQuery();
+            if(result.next()){
+                return result.getInt("id");
+
+            }
+            else{
+                return -1;
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return -1;
+
+    }
+    public ObservableList<Body> getMeetingsTeacher(String teacher_id, int classroom_id){
+        ObservableList<Body> meetings = FXCollections.observableArrayList();
+        String getMeetings = "SELECT * FROM courses WHERE teacher_id_c=? and endtime>NOW() and classroom_id_c=? LIMIT 3";
+        try {
+            PreparedStatement ps = connection.prepareStatement(getMeetings);
+            ResultSet result = null;
+            ps.setInt(2,classroom_id);
+            ps.setString(1,teacher_id);
+            result = ps.executeQuery();
+            while(result.next()){
+                String day = result.getTimestamp("starttime").toLocalDateTime().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL));
+                Timestamp time = result.getTimestamp("starttime");
+                String starttime = new SimpleDateFormat("HH:mm").format(time);
+                Timestamp time2 = result.getTimestamp("endtime");
+                String endtime = new SimpleDateFormat("HH:mm").format(time2);
+                String type = result.getString("type");
+                Body body = new Body(result.getInt("id"), day, starttime, endtime, type);
+                meetings.add(body);
+
+
+            }
+            return  meetings;
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
+    }
+    public boolean addMeeting(int classroom_id, String teacher_id, LocalDateTime starttime, LocalDateTime endtime, String type, String link){
+
+        String addMeeting = "INSERT INTO courses (starttime, endtime, meeting_link, type, module_id_c, teacher_id_c, classroom_id_c) VALUES (?,?,?,?,?,?,?)";
+        Timestamp start = Timestamp.valueOf(starttime);
+        Timestamp end = Timestamp.valueOf(endtime);
+        int module_id = getModule(teacher_id, classroom_id);
+        try {
+            PreparedStatement ps = connection.prepareStatement(addMeeting);
+            int result;
+            ps.setTimestamp(1,start);
+            ps.setTimestamp(2,end);
+            ps.setString(3,link);
+            ps.setString(4,type);
+            ps.setInt(5, module_id);
+            ps.setString(6, teacher_id);
+            ps.setInt(7, classroom_id);
+            result = ps.executeUpdate();
+            return result > 0;
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+
+    }
+    public Body getMeetingInfo(int id){
+        String getMeetingInfo = "SELECT * FROM courses WHERE id=?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(getMeetingInfo);
+            ResultSet result = null;
+            ps.setInt(1,id);
+            result = ps.executeQuery();
+            if(result.next()){
+                Body body = new Body(result.getString("type"),
+                        result.getString("meeting_link"),
+                        result.getTimestamp("starttime").toLocalDateTime().toLocalTime(),
+                        result.getTimestamp("endtime").toLocalDateTime().toLocalTime(),
+                        result.getTimestamp("starttime").toLocalDateTime().toLocalDate());
+                return body;
+            }
+
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
+    }
+    public boolean updateMeeting(int id, LocalDateTime starttime, LocalDateTime endtime, String type, String link){
+
+        String addMeeting = "UPDATE courses SET starttime=?, endtime=?, meeting_link=?, type=? WHERE id=?";
+        Timestamp start = Timestamp.valueOf(starttime);
+        Timestamp end = Timestamp.valueOf(endtime);
+        try {
+            PreparedStatement ps = connection.prepareStatement(addMeeting);
+            int result;
+            ps.setTimestamp(1,start);
+            ps.setTimestamp(2,end);
+            ps.setString(3,link);
+            ps.setString(4,type);
+            ps.setInt(5, id);
+            result = ps.executeUpdate();
+            return result > 0;
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+
+    }
+    public boolean deleteMeeting(int id){
+
+        String delMeeting = "DELETE FROM courses WHERE id=?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(delMeeting);
+            int result;
+            ps.setInt(1,id);
+            result = ps.executeUpdate();
+            return result > 0;
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+
+    }
+
 
 }
 

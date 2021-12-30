@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTimePicker?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="511.0" prefWidth="994.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dicto.dicto.OnlineMeetingsTeacherController">
+   <children>
+      <Label layoutX="45.0" layoutY="14.0" prefHeight="35.0" prefWidth="290.0" style="-fx-background-color: #05386b; -fx-background-radius: 0;" text=" YOUR ONLINE MEETINGS " textFill="WHITE">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <AnchorPane fx:id="pane" layoutX="-1.0" layoutY="49.0" prefHeight="495.0" prefWidth="995.0" style="-fx-border-color: #05386b; -fx-border-radius: 30px;">
+         <children>
+            <HBox fx:id="hbo1" alignment="CENTER_LEFT" layoutX="81.0" layoutY="59.0" prefHeight="36.0" prefWidth="830.0" spacing="80.0" style="-fx-background-color: #05386b;">
+               <children>
+                  <Label fx:id="time1" text=" 12:00 - 13:30 " textFill="WHITE" />
+                  <Label fx:id="day1" text="Wedensday 13, december 2021" textFill="WHITE" />
+                  <Label fx:id="type1" text="[ TD ]" textFill="WHITE" />
+                  <JFXButton fx:id="cancel1" prefHeight="29.0" prefWidth="76.0" style="-fx-background-color: #C70039;" text="Cancel" textFill="WHITE">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <JFXButton fx:id="modify1" prefHeight="29.0" prefWidth="80.0" style="-fx-background-color: #5CDB95;" text="Modify" textFill="#05386b">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+               </children>
+            </HBox>
+            <HBox fx:id="hbo2" alignment="CENTER_LEFT" layoutX="81.0" layoutY="114.0" prefHeight="36.0" prefWidth="830.0" spacing="80.0" style="-fx-background-color: #05386b;">
+               <children>
+                  <Label fx:id="time2" text=" 12:00 - 13:30 " textFill="WHITE" />
+                  <Label fx:id="day2" text="Wedensday 13, december 2021" textFill="WHITE" />
+                  <Label fx:id="type2" text="[ TD ]" textFill="WHITE" />
+                  <JFXButton fx:id="cancel2" prefHeight="29.0" prefWidth="76.0" style="-fx-background-color: #C70039;" text="Cancel" textFill="WHITE">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <JFXButton fx:id="modify2" prefHeight="29.0" prefWidth="80.0" style="-fx-background-color: #5CDB95;" text="Modify" textFill="#05386b">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+               </children>
+            </HBox>
+            <HBox fx:id="hbo3" alignment="CENTER_LEFT" layoutX="82.0" layoutY="166.0" prefHeight="36.0" prefWidth="830.0" spacing="80.0" style="-fx-background-color: #05386b;">
+               <children>
+                  <Label fx:id="time3" text=" 12:00 - 13:30 " textFill="WHITE" />
+                  <Label fx:id="day3" text="Wedensday 13, december 2021" textFill="WHITE" />
+                  <Label fx:id="type3" text="[ TD ]" textFill="WHITE" />
+                  <JFXButton fx:id="cancel3" prefHeight="29.0" prefWidth="76.0" style="-fx-background-color: #C70039;" text="Cancel" textFill="WHITE">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <JFXButton fx:id="modify3" prefHeight="29.0" prefWidth="80.0" style="-fx-background-color: #5CDB95;" text="Modify" textFill="#05386b">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+               </children>
+            </HBox>
+            <Label layoutX="59.0" layoutY="226.0" text="Add a meeting" textFill="#05386b">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Label>
+            <JFXDatePicker fx:id="dateP" layoutX="129.0" layoutY="274.0" promptText="Meeting day" />
+            <JFXTimePicker fx:id="starttimeP" layoutX="360.0" layoutY="275.0" promptText="Begins at" />
+            <JFXComboBox fx:id="typeP" layoutX="133.0" layoutY="350.0" prefHeight="29.0" prefWidth="132.0" promptText="Type" />
+            <JFXTimePicker fx:id="endtimeP" layoutX="587.0" layoutY="275.0" promptText="Ends at" />
+            <JFXTextField fx:id="meetinglinkP" labelFloat="true" layoutX="337.0" layoutY="350.0" prefHeight="29.0" prefWidth="577.0" promptText="Meeting Link" />
+            <Label layoutX="62.0" layoutY="17.0" text="Upcoming meetings" textFill="#05386b">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Label>
+            <JFXButton layoutX="822.0" layoutY="408.0" onAction="#addMeeting" prefHeight="29.0" prefWidth="84.0" style="-fx-background-color: #5CDB95;" text="Add" textFill="#05386b">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXButton>
+         </children>
+      </AnchorPane>
+      <Label fx:id="id_talk" layoutX="349.0" layoutY="22.0" prefHeight="19.0" prefWidth="77.0" text="Logged in as: " />
+      <Label fx:id="id" layoutX="432.0" layoutY="22.0" text="Label" />
+   </children>
+</AnchorPane>

@@ -261,6 +261,139 @@ public class FXMloader {
         stage.show();
     }
 
+    public void openTeacherScene(User teacher, Authentication auth){
+        FXMLLoader fxmlLoader = new FXMLLoader(StudentScene.class.getResource("teacher_scene.fxml"));
+        Scene scene = null;
+        creators.put(TeacherScene.class, new Callable<TeacherScene>() {
+
+            @Override
+            public TeacherScene call() throws Exception {
+                return new TeacherScene(teacher, auth);
+            }
+
+        });
+
+        bordir(fxmlLoader);
+        try {
+            scene = new Scene(fxmlLoader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Stage stage = new Stage();
+        stage.setTitle("USTHB E-LEARNING PLATFORM - TEACHER");
+        stage.setScene(scene);
+        //stage.initStyle(StageStyle.UNDECORATED);
+        stage.setResizable(false);
+        stage.show();
+    }
+    public Pane getAnnounsTeacherPage(User user, Authentication auth){
+
+        try{
+            URL fileUrl = StudentScene.class.getResource("announcements_teacher.fxml");
+            if(fileUrl == null) throw new FileNotFoundException("This file doesn't exist");
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(fileUrl);
+            creators.put(AnnouncementsTeacherController.class, new Callable<AnnouncementsTeacherController>() {
+
+                @Override
+                public AnnouncementsTeacherController call() throws Exception {
+                    return new AnnouncementsTeacherController(user, auth);
+                }
+
+            });
+
+            bordir(loader);
+
+
+            view = loader.load();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return view;
+    }
+    public Pane getMeetingsTeacherPage(User user, Authentication auth){
+
+        try{
+            URL fileUrl = StudentScene.class.getResource("OnlineMeetingsTeacher.fxml");
+            if(fileUrl == null) throw new FileNotFoundException("This file doesn't exist");
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(fileUrl);
+            creators.put(OnlineMeetingsTeacherController.class, new Callable<OnlineMeetingsTeacherController>() {
+
+                @Override
+                public OnlineMeetingsTeacherController call() throws Exception {
+                    return new OnlineMeetingsTeacherController(user, auth);
+                }
+
+            });
+
+            bordir(loader);
+
+
+            view = loader.load();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return view;
+    }
+
+    public void openModifyMeeting(User user, int id, Authentication auth){
+        FXMLLoader fxmlLoader = new FXMLLoader(StudentScene.class.getResource("modify_meeting.fxml"));
+        Scene scene = null;
+        creators.put(ModifyMeetingController.class, new Callable<ModifyMeetingController>() {
+
+            @Override
+            public ModifyMeetingController call() throws Exception {
+                return new ModifyMeetingController(user, id, auth);
+            }
+
+        });
+
+        bordir(fxmlLoader);
+        try {
+            scene = new Scene(fxmlLoader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Stage stage = new Stage();
+        stage.setTitle("Modify meeting");
+        stage.setScene(scene);
+        //stage.initStyle(StageStyle.UNDECORATED);
+        stage.setResizable(false);
+        stage.show();
+    }
+    public Pane getFilesAndRecordsTeacher(User user, Authentication auth){
+
+        try{
+            URL fileUrl = StudentScene.class.getResource("sharedFilesTeacher.fxml");
+            if(fileUrl == null) throw new FileNotFoundException("This file doesn't exist");
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(fileUrl);
+            creators.put(SharedFilesTeacherController.class, new Callable<SharedFilesTeacherController>() {
+
+                @Override
+                public SharedFilesTeacherController call() throws Exception {
+                    return new SharedFilesTeacherController(user, auth);
+                }
+
+            });
+
+            bordir(loader);
+
+
+            view = loader.load();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return view;
+    }
+
 
 
 

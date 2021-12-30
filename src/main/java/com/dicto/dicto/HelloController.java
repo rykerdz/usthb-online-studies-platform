@@ -17,8 +17,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Callable;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
@@ -61,17 +59,31 @@ public class HelloController {
 
 
         Map<Class, Callable<?>> creators = new HashMap<>();
-        creators.put(StudentScene.class, new Callable<StudentScene>() {
-
-            @Override
-            public StudentScene call() throws Exception {
-                return new StudentScene(user);
-            }
-
-        });
-
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(Objects.requireNonNull(getClass().getResource("student_scene.fxml")));
+        if (user.isTeacher()){
+            creators.put(PreTeacherScene.class, new Callable<PreTeacherScene>() {
+
+                @Override
+                public PreTeacherScene call() throws Exception {
+                    return new PreTeacherScene(user);
+                }
+
+            });
+            loader.setLocation(Objects.requireNonNull(getClass().getResource("pre_teacher_scene.fxml")));
+
+        }
+        else {
+
+            creators.put(StudentScene.class, new Callable<StudentScene>() {
+
+                @Override
+                public StudentScene call() throws Exception {
+                    return new StudentScene(user);
+                }
+            });
+
+            loader.setLocation(Objects.requireNonNull(getClass().getResource("student_scene.fxml")));
+        }
 
         loader.setControllerFactory(new Callback<Class<?>, Object>() {
 

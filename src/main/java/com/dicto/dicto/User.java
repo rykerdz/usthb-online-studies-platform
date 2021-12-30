@@ -1,6 +1,7 @@
 package com.dicto.dicto;
 
 import java.time.LocalDate;
+import java.util.Locale;
 
 public class User {
     private String id, firstName, lastName, email, password, level, section;
@@ -70,7 +71,14 @@ public class User {
         int classroom_id = auth.getClassroomId(this);
         return classroom_id;
     }
+    public String getFullNameDecorated(){
+        return this.lastName.toUpperCase() + " "+ firstName.substring(0, 1).toUpperCase() + firstName.substring(1);
+    }
+
     public int getClassroom_id(){
         return this.classroom_id;
+    }
+    public void setClassroom_id(int classroom_id){
+        this.classroom_id = classroom_id;
     }
 }

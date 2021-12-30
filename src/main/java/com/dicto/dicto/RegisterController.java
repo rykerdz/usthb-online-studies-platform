@@ -64,7 +64,7 @@ public class RegisterController<textFormatter> {
     @FXML
     public void initialize() {
 
-        String levels[] = {"L3-ISIL", "L3-ACAD"};
+        String[] levels = {"L3-ISIL", "L3-ACAD"};
         level_cb.setItems(FXCollections.observableArrayList(levels));
         level_cb.setVisible(false);
         section_cb.setVisible(false);
