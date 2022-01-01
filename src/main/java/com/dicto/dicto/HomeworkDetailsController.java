@@ -202,8 +202,6 @@ public class HomeworkDetailsController {
                 fileNames += FILE_NAME+" ,";
                 auth.uploadFileStudent(this.homeworkId, this.userId, FILE_NAME, selectedFiles.get(i));
                 bttn.setDisable(false);
-
-
             }
         }
         PopUp.showDialog("Uploaded "+ fileNames+" To the Server successfully", "Upload Status");

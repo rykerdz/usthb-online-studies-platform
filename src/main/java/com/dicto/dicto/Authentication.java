@@ -8,6 +8,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.*;
@@ -1162,6 +1163,218 @@ public class Authentication {
         String delMeeting = "DELETE FROM courses WHERE id=?";
         try {
             PreparedStatement ps = connection.prepareStatement(delMeeting);
+            int result;
+            ps.setInt(1,id);
+            result = ps.executeUpdate();
+            return result > 0;
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+
+    }
+    public ObservableList<Filing> getSharedFilesTeacher(int classroom_id, String teacher_id){
+        ObservableList<Filing> files = FXCollections.observableArrayList();
+        String getFiles = "SELECT * FROM files WHERE classroom_id=? and teacher_id=?";
+        String type;
+        try {
+            PreparedStatement ps = connection.prepareStatement(getFiles);
+            ResultSet result = null;
+            ps.setInt(1,classroom_id);
+            ps.setString(2,teacher_id);
+            result = ps.executeQuery();
+            while(result.next()){
+                type = result.getString("type");
+                Timestamp time = result.getTimestamp("time");
+                String date = new SimpleDateFormat("yyyy/MM/dd - HH:mm").format(time);
+                int id = result.getInt("id");
+                String filename = result.getString("filename");
+                Filing file = new Filing(id, "", type, filename, date);
+                files.add(file);
+
+            }
+
+            //System.out.println(courses);
+            return files;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+    public ObservableList<Filing> getRecordsTeacher(int classroom_id, String teacher_id){
+        ObservableList<Filing> records = FXCollections.observableArrayList();
+        String getRecords = "SELECT * FROM records WHERE classroom_id=? and teacher_id=?";
+        String type;
+        try {
+            PreparedStatement ps = connection.prepareStatement(getRecords);
+            ResultSet result = null;
+            ps.setInt(1,classroom_id);
+            ps.setString(2,teacher_id);
+            result = ps.executeQuery();
+            while(result.next()){
+                type = result.getString("type");
+                Timestamp time = result.getTimestamp("time");
+                String date = new SimpleDateFormat("yyyy/MM/dd - HH:mm").format(time);
+                int id = result.getInt("id");
+                String filename = result.getString("duration");
+                String link = result.getString("link");
+                Filing file = new Filing(id, "", type, filename, date);
+                file.setLink(link);
+                records.add(file);
+
+            }
+
+            //System.out.println(courses);
+            return records;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+    public boolean uploadRecord(int classroom_id, String teacher_id, LocalDate date, String type, String link, String duration, LocalTime time){
+
+        String uploadRecord = "INSERT INTO records(link, type, time, duration, module_id, teacher_id, classroom_id) VALUES(?,?,?,?,?,?,?)";
+        int module_id = getModule(teacher_id, classroom_id);
+        Timestamp dated = Timestamp.valueOf(date.atTime(time));
+        try {
+            PreparedStatement ps = connection.prepareStatement(uploadRecord);
+            int result;
+            ps.setString(1,link);
+            ps.setString(2,type);
+            ps.setTimestamp(3,dated);
+            ps.setString(4,duration);
+            ps.setInt(5, module_id);
+            ps.setString(6,teacher_id);
+            ps.setInt(7,classroom_id);
+            result = ps.executeUpdate();
+            return result > 0;
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+
+    }
+    public Body getRecordInfo(int id){
+        String getRecordInfo = "SELECT * FROM records WHERE id=?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(getRecordInfo);
+            ResultSet result = null;
+            ps.setInt(1,id);
+            result = ps.executeQuery();
+            if(result.next()){
+                return new Body(result.getString("type"),
+                        result.getString("link"),
+                        result.getTimestamp("time").toLocalDateTime().toLocalTime(),
+                        result.getTimestamp("time").toLocalDateTime().toLocalDate(),
+                        result.getString("duration"));
+            }
+
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
+    }
+    public boolean updateRecord(int id, LocalDate date, String type, String link, String duration, LocalTime time){
+
+        String uploadRecord = "UPDATE records SET link=?, type=?, time=?, duration=? WHERE id=?";
+        Timestamp dated = Timestamp.valueOf(date.atTime(time));
+        try {
+            PreparedStatement ps = connection.prepareStatement(uploadRecord);
+            int result;
+            ps.setString(1,link);
+            ps.setString(2,type);
+            ps.setTimestamp(3,dated);
+            ps.setString(4,duration);
+            ps.setInt(5, id);
+            result = ps.executeUpdate();
+            return result > 0;
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+
+    }
+    public boolean uploadFileTeacher(int classroom_id, String teacher_id, String FILE_NAME, File file, String type){
+
+        int rs = 0;
+        PreparedStatement ps = null;
+        boolean done = false;
+        String sql = "";
+        int module_id = getModule(teacher_id, classroom_id);
+
+        try {
+            sql = "insert into files(filename, type, file, module_id, classroom_id, teacher_id) values(?,?,?,?,?,?)";
+
+            ps = connection.prepareStatement(sql);
+            ps.setString(1, FILE_NAME);
+            ps.setString(2, type);
+            FileInputStream FILE_DATA = new FileInputStream(file);
+            ps.setBinaryStream(3, (InputStream) FILE_DATA, (int) file.length());
+            ps.setInt(4, module_id);
+            ps.setInt(5, classroom_id);
+            ps.setString(6, teacher_id);
+
+            rs = ps.executeUpdate();
+            if (rs > 0) {
+                done = true;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                assert ps != null;
+                ps.close();
+
+            } catch (SQLException e) {
+
+                e.printStackTrace();
+            }
+
+        }
+
+        return done;
+    }
+    public boolean deleteFile(int id){
+
+        String delFile = "DELETE FROM files WHERE id=?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(delFile);
+            int result;
+            ps.setInt(1,id);
+            result = ps.executeUpdate();
+            return result > 0;
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+
+    }
+    public boolean deleteRecord(int id){
+
+        String delRecord = "DELETE FROM records WHERE id=?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(delRecord);
             int result;
             ps.setInt(1,id);
             result = ps.executeUpdate();

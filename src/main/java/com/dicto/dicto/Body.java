@@ -39,6 +39,13 @@ public class Body {
         this.endtime = endtime;
         this.date = date;
     }
+    public Body(String text, String text2, LocalTime starttime, LocalDate date, String text4) {
+        this.text = text;
+        this.text2 = text2;
+        this.starttime = starttime;
+        this.text4 = text4;
+        this.date = date;
+    }
 
     Body(String text1, String text2, int id, boolean dueToday){
         this.text = text1;

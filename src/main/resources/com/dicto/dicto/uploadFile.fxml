@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="335.0" prefWidth="571.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dicto.dicto.UploadFileController">
+   <children>
+      <AnchorPane fx:id="pane" layoutX="14.0" layoutY="22.0" prefHeight="292.0" prefWidth="546.0" style="-fx-border-color: #05386b; -fx-border-radius: 30px;" AnchorPane.bottomAnchor="21.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="22.0">
+         <children>
+            <Label layoutX="195.0" layoutY="1.0" style="-fx-background-color: #05386b;" text=" Upload a file " textFill="WHITE">
+               <font>
+                  <Font size="21.0" />
+               </font>
+            </Label>
+            <JFXButton layoutX="387.0" layoutY="220.0" onAction="#upload" prefHeight="36.0" prefWidth="111.0" style="-fx-background-color: #5CDB95;" text="Submit" textFill="#05386b" AnchorPane.rightAnchor="47.640003398437386">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXButton>
+            <JFXButton layoutX="411.0" layoutY="73.0" onAction="#chooseFile" prefHeight="19.0" prefWidth="111.0" style="-fx-background-color: #5CDB95;" text="Choose files" textFill="#05386b">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXButton>
+            <JFXRadioButton fx:id="cour" layoutX="129.0" layoutY="78.0" text="COUR" />
+            <JFXRadioButton fx:id="tp" layoutX="299.0" layoutY="78.0" text="TP" />
+            <JFXRadioButton fx:id="td" layoutX="217.0" layoutY="78.0" text="TD" />
+            <Label layoutX="14.0" layoutY="78.0" text="Document type:" />
+            <Label layoutX="14.0" layoutY="136.0" text="Selected files: " />
+            <Label fx:id="files" alignment="TOP_LEFT" layoutX="101.0" layoutY="136.0" prefHeight="57.0" prefWidth="407.0" wrapText="true" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

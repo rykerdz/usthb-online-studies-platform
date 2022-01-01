@@ -79,14 +79,24 @@ public class SharedFilesController {
         if(download.getText().equals("Download Selected File")) {
             if (tableView.getSelectionModel().getSelectedItem() == null) {
                 // TODO: pop up error msg
+                PopUp.showDialog("Please select a file to download", "Error");
             } else {
                 int id = tableView.getSelectionModel().getSelectedItem().getValue().getId();
                 String fileName = tableView.getSelectionModel().getSelectedItem().getValue().getName();
+                download.setText("Downloading...");
+                if(auth.downloadFile(id, fileName)){
+                    PopUp.showDialog("File "+fileName+" has been downloaded successfully", "Success");
+                }
+                else {
+                    PopUp.showDialog("an error oucurred please try again later", "Error");
+                }
+                download.setText("Download Selected File");
             }
         }
         else{
             if (tableView.getSelectionModel().getSelectedItem() == null) {
                 // TODO: pop up error msg
+                PopUp.showDialog("Please select a record to watch", "Error");
             } else {
                 String link = tableView.getSelectionModel().getSelectedItem().getValue().getLink();
                 goToLink(link);

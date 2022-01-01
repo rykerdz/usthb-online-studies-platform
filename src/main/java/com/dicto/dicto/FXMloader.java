@@ -369,7 +369,7 @@ public class FXMloader {
     public Pane getFilesAndRecordsTeacher(User user, Authentication auth){
 
         try{
-            URL fileUrl = StudentScene.class.getResource("sharedFilesTeacher.fxml");
+            URL fileUrl = StudentScene.class.getResource("sharedFiles_teacher.fxml");
             if(fileUrl == null) throw new FileNotFoundException("This file doesn't exist");
 
             FXMLLoader loader = new FXMLLoader();
@@ -392,6 +392,81 @@ public class FXMloader {
             e.printStackTrace();
         }
         return view;
+    }
+    public void openUploadRecord(User user, Authentication auth){
+        FXMLLoader fxmlLoader = new FXMLLoader(StudentScene.class.getResource("uploadRecord.fxml"));
+        Scene scene = null;
+        creators.put(UploadRecordController.class, new Callable<UploadRecordController>() {
+
+            @Override
+            public UploadRecordController call() throws Exception {
+                return new UploadRecordController(user, auth);
+            }
+
+        });
+
+        bordir(fxmlLoader);
+        try {
+            scene = new Scene(fxmlLoader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Stage stage = new Stage();
+        stage.setTitle("Upload record");
+        stage.setScene(scene);
+        //stage.initStyle(StageStyle.UNDECORATED);
+        stage.setResizable(false);
+        stage.show();
+    }
+    public void openUpdateRecord(User user, int id, Authentication auth){
+        FXMLLoader fxmlLoader = new FXMLLoader(StudentScene.class.getResource("modifyRecord.fxml"));
+        Scene scene = null;
+        creators.put(ModifyRecordController.class, new Callable<ModifyRecordController>() {
+
+            @Override
+            public ModifyRecordController call() throws Exception {
+                return new ModifyRecordController(user, id, auth);
+            }
+
+        });
+
+        bordir(fxmlLoader);
+        try {
+            scene = new Scene(fxmlLoader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Stage stage = new Stage();
+        stage.setTitle("Update record");
+        stage.setScene(scene);
+        //stage.initStyle(StageStyle.UNDECORATED);
+        stage.setResizable(false);
+        stage.show();
+    }
+    public void openUploadFile(User user, Authentication auth){
+        FXMLLoader fxmlLoader = new FXMLLoader(StudentScene.class.getResource("uploadFile.fxml"));
+        Scene scene = null;
+        creators.put(UploadFileController.class, new Callable<UploadFileController>() {
+
+            @Override
+            public UploadFileController call() throws Exception {
+                return new UploadFileController(user, auth);
+            }
+
+        });
+
+        bordir(fxmlLoader);
+        try {
+            scene = new Scene(fxmlLoader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Stage stage = new Stage();
+        stage.setTitle("Upload a file");
+        stage.setScene(scene);
+        //stage.initStyle(StageStyle.UNDECORATED);
+        stage.setResizable(false);
+        stage.show();
     }
 
 
