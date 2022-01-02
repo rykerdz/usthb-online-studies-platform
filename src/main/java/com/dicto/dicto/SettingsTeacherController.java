@@ -1,19 +1,16 @@
 package com.dicto.dicto;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class SettingsController {
+public class SettingsTeacherController {
     private User user;
     private Authentication auth;
 
-    SettingsController(User user, Authentication auth) {
+    SettingsTeacherController(User user, Authentication auth) {
         this.user = user;
         this.auth = auth;
     }
@@ -62,8 +59,8 @@ public class SettingsController {
             PopUp.showDialog("No changes are made. aborting...", "Notice");
         } else {
             if (Data.checkName(firstNameTF.getText(), lastNameTF.getText()) && Data.checkEmail(emailTF.getText()) && Data.checkPassword_login(passwordTF.getText())) {
-                if (emailTF.getText().contains("@etu.usthb.dz")) {
-                    if (auth.checkPasswordAndPushUpdates(user.getId(), passwordTF.getText(), firstNameTF.getText(), lastNameTF.getText(), emailTF.getText(), false)) {
+                if (!emailTF.getText().contains("@etu.usthb.dz")) {
+                    if (auth.checkPasswordAndPushUpdates(user.getId(), passwordTF.getText(), firstNameTF.getText(), lastNameTF.getText(), emailTF.getText(), true)) {
                         PopUp.showDialog("Changes saved!", "Success");
                         user.setFirstName(firstNameTF.getText());
                         user.setLastName(lastNameTF.getText());
@@ -72,11 +69,11 @@ public class SettingsController {
                         PopUp.showDialog("Wrong password!", "Error");
                     }
                 } else {
-                    PopUp.showDialog("Your email must contain @etu.usthb.dz since you are a student!", "Error");
+                    PopUp.showDialog("Your email can't contain @etu.usthb.dz since you are a teacher!", "Error");
                 }
 
             } else {
-                PopUp.showDialog("No special characters are allowed in the name fields, password must be atleast 8 characters long", "Error");
+                PopUp.showDialog("No special characters are allowed in the name fields, password must be atleast 8 characters long and email must contains usthb.dz", "Error");
             }
         }
     }
@@ -84,7 +81,7 @@ public class SettingsController {
     public void pushhPassword(){
         if(Data.checkPassword(newPasswordTF.getText(), retypeNewPasswordTF.getText())){
             if(Data.checkPassword_login(oldPasswordTF.getText())){
-                if(auth.checkPasswordAndPushNewPassword(user.getId(), oldPasswordTF.getText(), newPasswordTF.getText(), false)){
+                if(auth.checkPasswordAndPushNewPassword(user.getId(), oldPasswordTF.getText(), newPasswordTF.getText(), true)){
                     PopUp.showDialog("You have successfully changed your password!", "Success");
                 }
                 else{

@@ -468,6 +468,164 @@ public class FXMloader {
         stage.setResizable(false);
         stage.show();
     }
+    public Pane getHomeworkTeacher(User user, Authentication auth){
+
+        try{
+            URL fileUrl = StudentScene.class.getResource("homework_teacher.fxml");
+            if(fileUrl == null) throw new FileNotFoundException("This file doesn't exist");
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(fileUrl);
+            creators.put(HomeworkTeacherController.class, new Callable<HomeworkTeacherController>() {
+
+                @Override
+                public HomeworkTeacherController call() throws Exception {
+                    return new HomeworkTeacherController(user, auth);
+                }
+
+            });
+
+            bordir(loader);
+
+
+            view = loader.load();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return view;
+    }
+    public void openAddHomework(User user, Authentication auth){
+        FXMLLoader fxmlLoader = new FXMLLoader(StudentScene.class.getResource("addHomework.fxml"));
+        Scene scene = null;
+        creators.put(AddHomeworkController.class, new Callable<AddHomeworkController>() {
+
+            @Override
+            public AddHomeworkController call() throws Exception {
+                return new AddHomeworkController(user, auth);
+            }
+
+        });
+
+        bordir(fxmlLoader);
+        try {
+            scene = new Scene(fxmlLoader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Stage stage = new Stage();
+        stage.setTitle("Add a homework");
+        stage.setScene(scene);
+        //stage.initStyle(StageStyle.UNDECORATED);
+        stage.setResizable(false);
+        stage.show();
+    }
+    public void openUpdateHomework(User user, int id, Authentication auth){
+        FXMLLoader fxmlLoader = new FXMLLoader(StudentScene.class.getResource("modifyHomework.fxml"));
+        Scene scene = null;
+        creators.put(ModifyHomeworkController.class, new Callable<ModifyHomeworkController>() {
+
+            @Override
+            public ModifyHomeworkController call() throws Exception {
+                return new ModifyHomeworkController(user, id, auth);
+            }
+
+        });
+
+        bordir(fxmlLoader);
+        try {
+            scene = new Scene(fxmlLoader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Stage stage = new Stage();
+        stage.setTitle("Modify homework");
+        stage.setScene(scene);
+        //stage.initStyle(StageStyle.UNDECORATED);
+        stage.setResizable(false);
+        stage.show();
+    }
+    public Pane getQuestionsTeacher(User user, Authentication auth){
+
+        try{
+            URL fileUrl = StudentScene.class.getResource("question_scene.fxml");
+            if(fileUrl == null) throw new FileNotFoundException("This file doesn't exist");
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(fileUrl);
+            creators.put(QuestionScene.class, new Callable<QuestionScene>() {
+
+                @Override
+                public QuestionScene call() throws Exception {
+                    return new QuestionScene(user, auth);
+                }
+
+            });
+
+            bordir(loader);
+
+
+            view = loader.load();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return view;
+    }
+    public Pane getQuestionTeacher(User user, int id, String studentName, Authentication auth){
+
+        try{
+            URL fileUrl = StudentScene.class.getResource("question.fxml");
+            if(fileUrl == null) throw new FileNotFoundException("This file doesn't exist");
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(fileUrl);
+            creators.put(QuestionController.class, new Callable<QuestionController>() {
+
+                @Override
+                public QuestionController call() throws Exception {
+                    return new QuestionController(user, id, studentName, auth);
+                }
+
+            });
+
+            bordir(loader);
+
+
+            view = loader.load();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return view;
+    }
+    public Pane getSettingsTeacher(User user, Authentication auth){
+
+        try{
+            URL fileUrl = StudentScene.class.getResource("settings_teacher.fxml");
+            if(fileUrl == null) throw new FileNotFoundException("This file doesn't exist");
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(fileUrl);
+            creators.put(SettingsTeacherController.class, new Callable<SettingsTeacherController>() {
+
+                @Override
+                public SettingsTeacherController call() throws Exception {
+                    return new SettingsTeacherController(user, auth);
+                }
+
+            });
+
+            bordir(loader);
+
+
+            view = loader.load();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return view;
+    }
 
 
 

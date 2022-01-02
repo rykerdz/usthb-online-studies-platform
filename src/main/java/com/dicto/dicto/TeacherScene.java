@@ -64,19 +64,19 @@ public class TeacherScene{
     }
     public void showHomeworks() {
         FXMloader obj = new FXMloader();
-        Pane view = obj.getHomeworkPage(user, auth);
+        Pane view = obj.getHomeworkTeacher(user, auth);
         mainPane.setCenter(view);
 
     }
     public void showSettings() {
         FXMloader obj = new FXMloader();
-        Pane view = obj.getSettingsPage(user, auth);
+        Pane view = obj.getSettingsTeacher(user, auth);
         mainPane.setCenter(view);
 
     }
     public void showQuestions() {
         FXMloader obj = new FXMloader();
-        Pane view = obj.getQuestionsPage(user, auth);
+        Pane view = obj.getQuestionsTeacher(user, auth);
         mainPane.setCenter(view);
 
     }

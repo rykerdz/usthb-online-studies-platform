@@ -1,12 +1,19 @@
 package com.dicto.dicto;
 
-public class Homework {
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+public class Homework extends RecursiveTreeObject<Homework> {
 
     private String body;
     private String teacherName;
     private String duration;
 
-
+    private int id;
+    private LocalTime time;
+    private LocalDate date;
 
     private OneReallySimpleFile file;
     private String title;
@@ -21,6 +28,45 @@ public class Homework {
         this.title = title;
         this.publishDate = publishDate;
         this.dueDate = dueDate;
+    }
+
+    public Homework(String title, String body, LocalTime time, LocalDate date, String duration) {
+        this.body = body;
+        this.duration = duration;
+        this.time = time;
+        this.date = date;
+        this.title = title;
+    }
+
+    public Homework(int id, String title, String publishDate, String dueDate){
+        this.id = id;
+        this.title = title;
+        this.publishDate = publishDate;
+        this.dueDate = dueDate;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public LocalTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalTime time) {
+        this.time = time;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public OneReallySimpleFile getFile() {

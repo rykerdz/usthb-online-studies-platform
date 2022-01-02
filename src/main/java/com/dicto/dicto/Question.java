@@ -15,6 +15,12 @@ public class Question extends RecursiveTreeObject<Question> {
     private String response;
     private String respondedOn;
 
+    public Question(String askedOn, String subject, String body) {
+        this.askedOn = askedOn;
+        this.subject = subject;
+        this.body = body;
+    }
+
     public Question(int id, String module, String teacherName, String askedOn, String subject, String answered) {
         this.id = id;
         this.module = module;
